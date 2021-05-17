@@ -5,8 +5,8 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 In the project directory, you can run:
 
 
-### `use npm install  in terminal`
-
+###  use ` npm install  `in terminal
+And
 ### `yarn start`
 
 Runs the app in the development mode.<br />
