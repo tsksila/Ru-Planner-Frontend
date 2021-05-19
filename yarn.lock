@@ -1448,6 +1448,13 @@
     react-is "^16.8.0 || ^17.0.0"
     react-transition-group "^4.4.0"
 
+"@material-ui/icons@^4.11.2":
+  version "4.11.2"
+  resolved "https://registry.yarnpkg.com/@material-ui/icons/-/icons-4.11.2.tgz#b3a7353266519cd743b6461ae9fdfcb1b25eb4c5"
+  integrity sha512-fQNsKX2TxBmqIGJCSi3tGTO/gZ+eJgWmMJkgDiOfyNaunNaxcklJQFaFogYcFl0qFuaEz1qaXYXboa/bUXVSOQ==
+  dependencies:
+    "@babel/runtime" "^7.4.4"
+
 "@material-ui/styles@^4.11.4":
   version "4.11.4"
   resolved "https://registry.npmjs.org/@material-ui/styles/-/styles-4.11.4.tgz"
@@ -9583,6 +9590,11 @@ react-hook-form@^7.6.0:
   version "7.6.0"
   resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-7.6.0.tgz#ec8aa8376738356c5af09992404292ba04067ac4"
   integrity sha512-Ai3lx5TZO/W274PVgIqOkjhCAxQJ7KRU9c6tTM1M0LDctCUZ0LavirUiy+42b0gxGLUswO0vPsxcpw1CkkebUA==
+
+react-if@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/react-if/-/react-if-4.0.1.tgz#fd60599f585a55d417d94f9a576047869994fcae"
+  integrity sha512-TyfDGdBrIAHntLM5YkRbszeqcyzucB3m2ddF46XH10wTZ8SE2ZjNPD8qNphTJ+7j36SZ4qMvqmlMntcsczLAXQ==
 
 react-is@^16.12.0, react-is@^16.13.1, react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.1, react-is@^16.8.4:
   version "16.13.1"
