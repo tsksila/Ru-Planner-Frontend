@@ -1,6 +1,5 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-//import { ErrorMessage } from "@hookform/error-message";
 
 function Register() {
   const [firstName, setFirstName] = React.useState("");

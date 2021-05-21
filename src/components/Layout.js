@@ -2,7 +2,7 @@
 
 import React , {useState ,useEffect} from 'react';
 
-import Sidebar from "./Sidebar";
+import Sidebar from "./sidebar";
 import MenuIcon from '@material-ui/icons/Menu';
 
 function Layout({children}) {
