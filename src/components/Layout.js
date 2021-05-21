@@ -32,11 +32,11 @@ function Layout({children}) {
                 </div>
                 <div className=" flex-1 justify-center ">
                   <div className='md:flex'>
-                      <div className="bg-gray-800 text-gray-100 flex justify-between md:hidden">
+                      <div className="bg-blue-500 text-gray-100 flex justify-between md:hidden">
                             <button className="mobile-menu-button p-4 focus:outline-none focus:bg-gray-700" onClick={()=> setShow(!show)} >
-                                    <MenuIcon/>
+                                    <MenuIcon />
                             </button>
-                            <span className=' m-3 text-2xl flex justify-center'>PLANNER</span>
+                            <span className=' m-3 text-2xl flex justify-center'>  <img alt="Planner" src={process.env.PUBLIC_URL + '/logo512.png' } className="h-10 rounded-full" /> </span>
                       </div>
                   </div>
                     {children}

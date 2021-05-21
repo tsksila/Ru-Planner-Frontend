@@ -75,13 +75,13 @@ function Login() {
 
           <form className="space-y-6" onSubmit={handleSubmit(onSubmitLogin)}>   
             <div>
-              <label className="text-sm font-semibold font-base  text-gray-600 block"> อีเมล </label>
+              <label className="text-l  font-base  text-gray-600 block"> อีเมล </label>
               <input
                 type="text"
                 id="email"
                 defaultValue={localStorage.getItem('remember_email')}
                 {...register("email", { required: true })}
-                className="w-full p-2 border-2 border-gray-700 border-opacity-75    rounded mt-5 "
+                className="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white "
                 style={{borderColor : errors.email ? "red" : ""}}
               />
 
@@ -93,12 +93,12 @@ function Login() {
             </div>
 
             <div>
-              <label className="text-sm font-semibold font-base  text-gray-600 block"> พาสเวิร์ด </label>
+              <label className="text-l  font-base  text-gray-600 block"> พาสเวิร์ด </label>
               <input
                 type="password"
                 defaultValue="cakesom212"
                 {...register("password", { required: true })}
-                className="w-full p-2 border-2 border-gray-700  border-opacity-75 rounded mt-5 "
+                className="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
                 style={{ borderColor : errors.password ? "red" : ""}}
               />
               <div className="text-sm text-red-300 font-base">
@@ -129,7 +129,7 @@ function Login() {
             <div>
               <button
                 type="submit"
-                className="w-full   items-center  py-2 px-4 font-base text-white bg-black hover:bg-gray-900  focus:outline-none focus:ring-2 focus:ring-gray-600 focus:ring-opacity-50  rounded-lg "
+                className="w-full   items-center  py-2 px-4 font-base text-white bg-green-500 hover:bg-gray-900  focus:outline-none focus:ring-2 focus:ring-gray-600 focus:ring-opacity-50  rounded-lg "
               >
                   {loading ? ( <CircularProgress style={{'color': '#fafafa'}} size={20} /> ) : "เข้าสู่ระบบ"}
               </button>
