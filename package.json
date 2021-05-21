@@ -4,13 +4,20 @@
   "private": true,
   "dependencies": {
     "@craco/craco": "^6.1.2",
+    "@date-io/date-fns": "^2.10.8",
+    "@hookform/error-message": "^2.0.0",
     "@material-ui/core": "^4.11.4",
     "@material-ui/icons": "^4.11.2",
+<<<<<<< HEAD
+=======
+    "@material-ui/pickers": "^3.3.10",
+>>>>>>> cfd650ec20add8837a21d7a1c3a4641d912c4197
     "@reduxjs/toolkit": "^1.5.1",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "axios": "^0.21.1",
+    "date-fns": "^2.21.3",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-hook-form": "^7.6.0",
