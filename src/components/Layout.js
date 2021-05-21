@@ -28,26 +28,19 @@ function Layout({children}) {
 
         <div className="flex ">
                 <div  className='relative min-h-screen  md:flex '>
-                    <Sidebar show={show} close={close}/>
+                    <Sidebar show={show} close={close} />
                 </div>
-               
                 <div className=" flex-1 justify-center ">
-
                   <div className='md:flex'>
                       <div className="bg-gray-800 text-gray-100 flex justify-between md:hidden">
-                      
                             <button className="mobile-menu-button p-4 focus:outline-none focus:bg-gray-700" onClick={()=> setShow(!show)} >
                                     <MenuIcon/>
                             </button>
-
                             <span className=' m-3 text-2xl flex justify-center'>PLANNER</span>
-
                       </div>
                   </div>
-
                     {children}
                 </div>
-            
         </div>
     );
 }
