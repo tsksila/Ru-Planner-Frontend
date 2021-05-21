@@ -70,7 +70,7 @@ function Login() {
           </div>
           
         </div>
-        <div className="max-w-md w-full mx-auto mt-4 bg-white p-8 rounded-lg shadow-lg">  
+        <div className="max-w-md w-full mx-auto mt-4 bg-white p-8 rounded-3xl shadow-lg">  
             
 
           <form className="space-y-6" onSubmit={handleSubmit(onSubmitLogin)}>   

@@ -47,8 +47,8 @@ function Register() {
 */
 
   return (
-    <div className='min-h-screen   bg-blue-100 flex flex-col justify-center  font-base '>
-      <form onSubmit={handleSubmit(onSubmit)}  className='w-9/12  bg-white p-10 mx-auto rounded-3xl'>
+    <div className='min-h-screen   bg-blue-100 flex flex-col justify-center  font-base  '>
+      <form onSubmit={handleSubmit(onSubmit)}  className='w-9/12  bg-white p-10 mx-auto rounded-3xl shadow-lg'>
             <div className="flex flex-wrap -mx-3 mb-6">
               <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                 <label className="block uppercase tracking-wide text-gray-700 text-l    mb-2">   
@@ -67,7 +67,7 @@ function Register() {
                     },
                   })}
                 />
-                <p className="text-red-500 text-l italic">
+                <span className="text-red-500 text-l italic">
                   <ErrorMessage
                     errors={errors}
                     name="firstName"
@@ -75,12 +75,12 @@ function Register() {
                       console.log("messages", messages);
                       return messages
                         ? Object.entries(messages).map(([type, message]) => (
-                            <p key={type}>{message}</p>
+                            <span key={type}>{message}</span>
                           ))
                         : null;
                     }}
                   />
-                </p>
+                </span>
               </div>
 
               <div className="w-full md:w-1/2 px-3">
@@ -95,9 +95,9 @@ function Register() {
                     required: true,
                   })}
                 />
-                <p className="text-red-500 text-l italic">
+                <span className="text-red-500 text-l italic">
                   {errors.lastName?.type === "required" && "กรุณากรอกนามสกุล"}
-                </p>
+                </span>
               </div>
             </div>
 
@@ -114,9 +114,9 @@ function Register() {
                     required: true,
                   })}
                 />
-                <p className="text-red-500 text-l italic">
+                <span className="text-red-500 text-l italic">
                   {errors.email?.type === "required" && "กรุณากรอกอีเมล"}
-                </p>
+                </span>
               </div>
               <div className="w-full md:w-1/2 px-3">
                 <label className="block uppercase tracking-wide text-gray-700 text-l    mb-2">
@@ -130,9 +130,9 @@ function Register() {
                     required: true,
                   })}
                 />
-                <p className="text-red-500 text-l italic">
+                <span className="text-red-500 text-l italic">
                   {errors.password?.type === "required" && "กรุณากรอกรหัสผ่าน"}
-                </p>
+                </span>
               </div>
             </div>
 
@@ -149,9 +149,9 @@ function Register() {
                     required: true,
                   })}
                 />
-                <p className="text-red-500 text-l italic">
+                <span className="text-red-500 text-l italic">
                   {errors.university?.type === "required" && "กรุณากรอกรหัสผ่าน"}
-                </p>
+                </span>
               </div>
               <div className="w-full md:w-1/2 px-3">
                 <label className="block uppercase tracking-wide text-gray-700   text-l  mb-2">
@@ -166,9 +166,9 @@ function Register() {
                     required: true,
                   })}
                 />
-                <p className="text-red-500 text-l italic">
+                <span className="text-red-500 text-l italic">
                   {errors.faculty?.type === "required" && "กรุณากรอกรหัสผ่าน"}
-                </p>
+                </span>
               </div>
             </div>
 
