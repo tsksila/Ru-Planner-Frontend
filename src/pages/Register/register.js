@@ -1,5 +1,6 @@
-import React from "react";
+import React  from "react";
 import { useForm } from "react-hook-form";
+import axios from 'axios'
 
 function Register() {
   const [firstName, setFirstName] = React.useState("");
@@ -36,6 +37,44 @@ function Register() {
       setMajor(newValue);
     }
   };
+
+
+ function getUnivervity () {
+       axios.get('https://ruplanner.herokuapp.com/universities').then((res)=> {
+
+        console.log(res.data)
+       })
+    
+ }
+
+
+  function Register () {
+
+      const newUser = {
+        username : 'test' ,
+        email : 'test@mail.com',
+        password :'Cakesom121' ,
+        major : '609f74493dfe8d13a47c8fd4'
+      }
+
+      axios
+        .post('https://ruplanner.herokuapp.com/auth/local/register', {
+          username: newUser.username,
+          email: newUser.email,
+          password: newUser.password,
+          major : newUser.major
+        })
+        .then(response => {
+          // Handle success.
+          console.log('Well done!');
+          console.log('User profile', response.data.user);
+          console.log('User token', response.data.jwt);
+        })
+        .catch(error => {
+          // Handle error.
+          console.log('An error occurred:', error.response);
+        });
+  }
 
   return (
     <div className="min-h-screen   bg-blue-100 flex flex-col justify-center  font-base  ">
@@ -123,6 +162,28 @@ function Register() {
         </div>
 
         <div className="flex flex-wrap -mx-3 mb-6">
+          <div className="w-full px-3">
+            <label className="block uppercase tracking-wide text-gray-700  text-l mb-2">
+              มหาวิทยาลัย
+            </label>
+            <input
+              className="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+              type="text"
+              name="university"
+              value={university}
+              placeholder="รามคำแหง"
+              {...register("university", {
+                required: true,
+              })}
+              onChange={handleNameChange}
+            />
+            <span className="text-red-500 text-l italic">
+              {errors.university?.type === "required" && "กรุณากรอกมหาวิทยาลัย"}
+            </span>
+          </div>
+        </div>
+
+        <div className="flex flex-wrap -mx-3 mb-6">
           <div className="w-full md:w-1/2 px-3">
             <label className="block uppercase tracking-wide text-gray-700   text-l  mb-2">
               คณะ
@@ -162,32 +223,13 @@ function Register() {
             </span>
           </div>
         </div>
-        <div className="flex flex-wrap -mx-3 mb-6">
-          <div className="w-full px-3">
-            <label className="block uppercase tracking-wide text-gray-700  text-l mb-2">
-              มหาวิทยาลัย
-            </label>
-            <input
-              className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-              type="text"
-              name="university"
-              value={university}
-              placeholder="รามคำแหง"
-              {...register("university", {
-                required: true,
-              })}
-              onChange={handleNameChange}
-            />
-            <span className="text-red-500 text-l italic">
-              {errors.university?.type === "required" && "กรุณากรอกมหาวิทยาลัย"}
-            </span>
-          </div>
-        </div>
+       
 
         <div className="md:flex mt-6 justify-end ">
           <button
-            className="bg-blue-500 hover:bg-blue-700 text-white rounded-xl py-2 px-4"
+            className="bg-blue-500 hover:bg-blue-700  text-white rounded-xl py-2 px-4"
             type="submit"
+            onClick={Register }
           >
             สมัครสมาชิก
           </button>

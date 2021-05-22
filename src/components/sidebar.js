@@ -16,13 +16,25 @@ function Sidebar({show ,close}) {
     
     const history = useHistory()
 
+
+    /** customstyle sweet alert2 */
+ 
+    const SwalWithStyle = Swal.mixin({
+        customClass: {
+          title : 'font-base',
+          confirmButton: 'p-3  bg-blue-300 font-base mr-4  text-blue-800 ',
+          cancelButton: 'p-3  bg-red-300 font-base  text-red-800  ',
+        },
+        buttonsStyling: false
+      })
+      
+  
+
     const logout = ()  => {
-        Swal.fire({
+        SwalWithStyle.fire({
             title: 'คุณต้องการออกจากระบบ ?',
             icon: 'warning',
             showCancelButton: true,
-            cancelButtonColor: '#d33',
-            confirmButtonColor: '#3085d6',
             confirmButtonText: 'ยืนยัน!',
             cancelButtonText:'ยกเลิก'
 

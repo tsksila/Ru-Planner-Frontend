@@ -2,12 +2,12 @@
 
 import React , {useState ,useEffect} from 'react';
 
-import Sidebar from "./sidebar";
+import Sidebar from "./Sidebar";
 import MenuIcon from '@material-ui/icons/Menu';
 
 function Layout({children}) {
     const [show ,setShow] =  useState(false);
-    function close () {setShow(false)}
+    function close (e) {  setShow(false)  }
 
     useEffect(() => {
         const resizeListener = () => {
