@@ -1,5 +1,5 @@
 import React  from 'react'
-import {Link ,useHistory} from 'react-router-dom'
+import {Link ,useHistory ,useLocation} from 'react-router-dom'
 import CloseIcon from '@material-ui/icons/Close';
 
 
@@ -15,6 +15,12 @@ import Swal from 'sweetalert2'
 function Sidebar({show ,close}) {
     
     const history = useHistory()
+    const location = useLocation()
+
+    
+
+
+
 
 
     /** customstyle sweet alert2 */
@@ -45,7 +51,7 @@ function Sidebar({show ,close}) {
           })
     }
 
-     const user = JSON.parse(localStorage.getItem('user_data'))
+     const user = localStorage.getItem('username')
      
     return (     
       
@@ -54,12 +60,12 @@ function Sidebar({show ,close}) {
             {/*  Logo  */}
              <img  alt="Planner" src={process.env.PUBLIC_URL + '/logo512.png'}  /> 
            
-            <span className='mt-5 text-l flex justify-center w-full bg-blue-200 p-3'>Welcome : {user ? user.user.username: "ไม่มีผู้ใช้"}</span>
+            <span className='mt-5 text-l flex justify-center w-full bg-blue-200 p-3'>Welcome : {user ? user: "ไม่มีผู้ใช้"}</span>
 
             <nav className="mt-10  mx-4 px-1   pt-7 pb-40 " >
-                <Link to="/">    <div  className="flex items-center py-2 px-4 text-gray-500 hover:bg-blue-200 bg-opacity-25 hover:text-blue-900 rounded-md"><StorageIcon className="mr-2"/> รายการของฉัน </div> </Link>
-                <Link to="/reg"> <div  className="flex items-center py-2 px-4 text-gray-500 hover:bg-blue-200 bg-opacity-25 hover:text-blue-900 rounded-md"><EventIcon className="mr-2"/> ตารางเรียน</div> </Link>
-                <Link to="/">    <div  className="flex items-center py-2 px-4 text-gray-500 hover:bg-blue-200 bg-opacity-25 hover:text-blue-900 rounded-md"><ForumIcon className="mr-2"/> ชุมชน </div> </Link>
+                <Link to="/profile">   <div className={`flex items-center py-2 px-4  ${location.pathname === '/profile' ? 'bg-blue-200 bg-opacity-25 text-blue-900':'text-gray-500'}   rounded-md`} ><StorageIcon className="mr-2"/> รายการของฉัน </div> </Link>
+                <Link to="/shedule">   <div className={`flex items-center py-2 px-4  ${location.pathname === '/shedule' ? 'bg-blue-200 bg-opacity-25 text-blue-900':'text-gray-500'}   rounded-md`}><EventIcon className="mr-2"/> ตารางเรียน</div> </Link>
+                <Link to="/community"> <div className={`flex items-center py-2 px-4  ${location.pathname === '/community' ? 'bg-blue-200 bg-opacity-25 text-blue-900':'text-gray-500'}   rounded-md`}><ForumIcon className="mr-2"/> ชุมชน </div> </Link>
             </nav>
 
             <div className="grid justify-items-center">

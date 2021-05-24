@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import {Link ,useHistory} from 'react-router-dom'
 import {useDispatch} from 'react-redux'
-import {login } from '../../redux/features/userSlice'
+import {login} from '../../redux/features/userSlice'
 
 
 import {CircularProgress} from '@material-ui/core';
@@ -38,7 +38,9 @@ function Login() {
 
 
     dispatch(login({
-      ...data ,
+      accessToken : data.jwt ,
+      user_id : data.user.id ,
+      username : data.user.username,
       loggedIn :true
     }))
 
@@ -129,7 +131,7 @@ function Login() {
             <div>
               <button
                 type="submit"
-                className="w-full   items-center  py-2 px-4 font-base text-white bg-green-500 hover:bg-gray-900  focus:outline-none focus:ring-2 focus:ring-gray-600 focus:ring-opacity-50  rounded-lg "
+                className="w-full   items-center  py-2 px-4 font-base text-white bg-green-500 hover:bg-green-800  focus:outline-none focus:ring-2 focus:ring-gray-600 focus:ring-opacity-50  rounded-lg "
               >
                   {loading ? ( <CircularProgress style={{'color': '#fafafa'}} size={20} /> ) : "เข้าสู่ระบบ"}
               </button>
