@@ -52,10 +52,18 @@ function CreatePlan() {
 
   /** get api */
   useEffect(() => {
-    axios.get("https://ruplanner.herokuapp.com/subjects").then((res) => {
-      setSubjectList(res.data);
-    });
-  }, []);
+     
+    let mounted = true
+     axios.get("https://ruplanner.herokuapp.com/subjects").then((res) => {
+      if (mounted) {
+        setSubjectList(res.data);
+      }
+      
+    })
+    return () => {
+      mounted = false
+    }
+  });
  
   /**  Total credit term */
   useEffect(() => {
