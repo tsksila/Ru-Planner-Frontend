@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom"
+import {Route, Switch ,Redirect } from "react-router-dom"
 
 
 import Layout from "./components/Layout"
@@ -15,6 +15,7 @@ import Community from './pages/Community'
 
 
 function App() {
+
   const withLayout = (Component) => (props) =>
     (
       <Layout>
@@ -23,21 +24,24 @@ function App() {
     );
 
   return (
-    <Router>
+ 
       <Switch>
-        <PrivateRoute exact path="/profile" component={withLayout(Profile)} />
-        <PrivateRoute exact path="/community" component={withLayout(Community)} />
-        <PrivateRoute exact path="/shedule" component={withLayout(Shedule)} />
-
-        
-        <Route exact path="/login" component={Login} />
-        <Route exact path="/register" component={Register} />
-        <Route exact path="/logout" component={Logout} />
+  
+        <Route  path="/login" component={Login} exact  />
+        <Route  path="/register" component={Register} />
+        <Route  path="/logout" component={Logout} />
 
 
-        <PrivateRoute exact path="/" component={withLayout(Profile)} />
+        <PrivateRoute  path="/profile" component={withLayout(Profile)}    />
+        <PrivateRoute  path="/community" component={withLayout(Community)} />
+        <PrivateRoute  path="/shedule" component={withLayout(Shedule)} />
+
+        <PrivateRoute path="/">
+           <Redirect to="/profile" /> 
+        </PrivateRoute>
+
       </Switch>
-    </Router>
+
   );
 }
 

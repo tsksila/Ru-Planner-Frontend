@@ -32,11 +32,46 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <title>Planner</title>
-
-
+   
 
   </head>
   <body>
+
+    <style>
+      ::-webkit-scrollbar-track
+        {
+          box-shadow: inset 0 0 6px rgba(31, 31, 31, 0.3);
+          background-color: #fafafa;
+          
+        }
+
+        ::-webkit-scrollbar
+        {
+          width: 10px;
+          background-color: #fafafa;
+        }
+
+        ::-webkit-scrollbar-thumb
+        {
+          border-radius: 10px;
+          background-image: -webkit-gradient(linear,
+                            left bottom,
+                            left top,
+                            color-stop(0.44, rgb(195, 215, 255)),
+                            color-stop(0.72, rgb(170, 208, 255)),
+                            color-stop(0.86, rgb(184, 202, 255)));
+        }
+
+        * {
+          font-family: 'Mitr', sans-serif;
+        }
+        #sub-code:focus {
+           outline: none;
+        }
+
+    </style>
+
+     
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root" ></div>
     <!--

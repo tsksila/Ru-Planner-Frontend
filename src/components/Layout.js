@@ -32,7 +32,7 @@ function Layout({children}) {
                 </div>
                 <div className=" flex-1 justify-center ">
                   <div className='md:flex'>
-                      <div className="bg-blue-500 text-gray-100 flex justify-between md:hidden">
+                      <div className="bg-blue-300 text-gray-100 flex justify-between md:hidden">
                             <button className="mobile-menu-button p-4 focus:outline-none focus:bg-gray-700" onClick={()=> setShow(!show)} >
                                     <MenuIcon />
                             </button>
