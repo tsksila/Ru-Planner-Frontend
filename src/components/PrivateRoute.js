@@ -43,7 +43,6 @@ function PrivateRoute({component : Component , ...rest}) {
     const currentTimeStamp = new Date().getTime().toString().substr(0 ,10)
     const accessTokenExp = getExpFromToken(accessToken)
 
-    
 
     useEffect(() => {
         if (currentTimeStamp >= accessTokenExp) {

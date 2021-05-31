@@ -50,7 +50,7 @@ function CreatePlan() {
 
 
 
-  /** get api */
+  /** get all subject api */
   useEffect(() => {
      
     let mounted = true
@@ -286,7 +286,7 @@ function CreatePlan() {
   return (
     <div className="  grid  grid-cols-1  md:grid-cols-2  ">
       {/** Add term */}
-      <div className="mx-auto w-full  p-5 font-base  ">
+      <div className="mx-auto w-full  p-5   ">
         <div className="w-full bg-white rounded-xl float-right shadow-lg text-sm">
           {/** Head */}
           <div className="h-10  bg-blue-300 rounded-t-xl  flex  items-center justify-end   ">
@@ -323,6 +323,7 @@ function CreatePlan() {
 
               <Autocomplete
                 id="sub-code"
+                getOptionSelected={(option, value) => option.subj_code === value.subj_code}
                 filterOptions={(options,  params) => {
                     const filtered = defaultFilterOptions(options, params).slice(0, OPTIONS_LIMIT);
 
@@ -434,7 +435,7 @@ function CreatePlan() {
       </div>
 
       {/** Add Plan */}
-      <div className="  mx-auto w-full  p-5 font-base  text-sm  " style={{ height: "80vh" }} >
+      <div className="  mx-auto w-full  p-5  " style={{ height: "80vh" }} >
         <div className="w-full bg-white rounded-xl float-right shadow-lg h-full  flex flex-col justify-between ">
           {/** Head */}
           <div className="h-10  bg-blue-300 rounded-t-xl  flex  items-center justify-start  ">
