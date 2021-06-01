@@ -1,9 +1,10 @@
 import React , {useState , useEffect} from 'react'
+import {If,Else,Then} from 'react-if'
 
-import Cancel from "@material-ui/icons/CancelRounded"
 import Autocomplete, { createFilterOptions } from "@material-ui/lab/Autocomplete"
+import Cancel from "@material-ui/icons/CancelRounded"
+import {CircularProgress} from '@material-ui/core';
 import axios from "axios"
-
 import Swal from "sweetalert2"
 
 
@@ -24,9 +25,10 @@ function MyList() {
    
     /** รายวิชาทั่งหมด */
     const [subjectList, setSubjectList] = useState([]) 
-
     /** รายวิชาของฉัน */
     const [mySubjectList, setMySubjectList] = useState([]) 
+    /** แผนการเรียนของฉัน */
+    const [myPlan ,setMyPlan] = useState({plan_terms:[]})
 
     /** ข้อมูลวิชา */
     const [subjID ,setSubjID] = useState()
@@ -35,60 +37,117 @@ function MyList() {
     const [subjCredit, setSubjCredit] = useState()
     const [grade , setGrade] = useState("4")
 
-
-    const [totalCredit , setTotalCredit] = useState()
-
-
-
+    const [totalPlanCredit , setTotalPlanCredit] = useState()
+    const [totalCredit , setTotalCredit] = useState(0)
+    const [totalGrade , setTotalGrede] = useState(0)
+    const [loading , setLoading] = useState(true)
 
 
       /** get all subject api */
-    useEffect(() => {
+    useEffect(  () => {
         let mounted = true
         axios.get("https://ruplanner.herokuapp.com/subjects").then((res) => {
         if (mounted) {
-            setSubjectList(res.data)
-            get_Mysubject()
+           setSubjectList(res.data)
+           get_Mysubject()
         }
         })
         return () => {
         mounted = false
         }
-    },[])
+    },[]) // eslint-disable-line react-hooks/exhaustive-deps
+    useEffect(() => {
+        let mounted = true
+        function calculate_credit () {
+            const  credit =   mySubjectList.reduce((total , item)=> {
+                const filtered =  subjectList.filter(subj =>  subj.id === item.subject)
+                return total + filtered[0].subj_credit
+            },0) 
+            if(mounted) { setTotalCredit(credit) }
+        }
+        calculate_credit ()
+        return () => {
+            mounted = false
+            }
+    }, [mySubjectList]) // eslint-disable-line react-hooks/exhaustive-deps
+    useEffect(() => {
+        function  calculate_grade() {
+            const  grade =   mySubjectList.reduce((total , item)=> {
+                const filtered =  subjectList.filter(subj =>  subj.id === item.subject)
+                return total +  (parseInt(item.grade)*filtered[0].subj_credit)
+            },0) 
+           setTotalGrede((grade/totalCredit).toFixed(2))
+        }
+        calculate_grade()
+    }, [totalCredit]) // eslint-disable-line react-hooks/exhaustive-deps
+    useEffect(() => {
+        function calculate_planCredit() {
+            const reducer = myPlan.plan_terms.reduce((total , term) => {
+                 const  totalCredit =   term.subjects.reduce( (termCredit, item)=> {
+                        const filtered = subjectList.filter((subj) => subj.id === item)
+                        return termCredit + filtered[0].subj_credit
+                    },0)
+                 return total + totalCredit
+            },0)
+            setTotalPlanCredit(reducer)
+        }
+        calculate_planCredit()
+    },[myPlan]) // eslint-disable-line react-hooks/exhaustive-deps
 
+    
     function get_Mysubject (){
         const myid = localStorage.getItem('user_id')
-         axios.get(`https://ruplanner.herokuapp.com/users/${myid}` , {
-            headers: { Authorization: 'Bearer ' + localStorage.getItem('accessToken') }
-         }).then((res) => {
-            setMySubjectList(res.data.my_subjects)
-         })
+        axios.get(`https://ruplanner.herokuapp.com/users/${myid}` , {
+                headers: { Authorization: 'Bearer ' + localStorage.getItem('accessToken') }
+                }).then( (res) => {
+                    get_myPlan( res.data.select_plans[0].id ) 
+                    setMySubjectList(res.data.my_subjects)  
+                    setLoading(false)
+                })
     }
-
-
-
+    function get_myPlan(id) {
+            axios.get(`https://ruplanner.herokuapp.com/plans/${id}`).then(({data}) =>{
+                setMyPlan(data)
+            })
+    }
     function set_subject(value) {
         setSubjID(value ? value.id :'') 
         setSubjCode(value ? value.subj_code : "")
         setSubjName(value ? value.subj_fullname : "")
         setSubjCredit(value ? value.subj_credit : "")
     }
-
     function add_Mysubject() {
-        const body ={ 
-            grade ,
-            user : localStorage.getItem('user_id') ,
-            subject : subjID
+        setLoading(true)
+        const filtered = mySubjectList.filter(item =>  item.subject === subjID) 
+        if(filtered.length === 0)  {
+
+            if(subjID) {
+                const body ={ 
+                    grade ,
+                    user : localStorage.getItem('user_id') ,
+                    subject : subjID
+                }
+                axios.post('https://ruplanner.herokuapp.com/my-subjects' ,body ,{
+                    headers: { Authorization: 'Bearer ' + localStorage.getItem('accessToken') }
+                }).then((res) => {
+                    get_Mysubject()
+                    setLoading(false)
+                })
+            }else{
+                SwalWithStyle.fire(({
+                    icon: "error",
+                    title: "กรุณาเลือกวิชา"
+                }))
+                setLoading(false)
+            }
+          
+        }else {
+            SwalWithStyle.fire(({
+                icon: "error",
+                title: "ท่านมีวิชานี้อยู่แล้วในรายการ"
+            }))
+            setLoading(false)
         }
-
-        axios.post('https://ruplanner.herokuapp.com/my-subjects' ,body ,{
-            headers: { Authorization: 'Bearer ' + localStorage.getItem('accessToken') }
-        }).then((res) => {
-            console.log(res.data)
-            get_Mysubject()
-        })
-
-
     }
     function remove_Mysubject (ms_id){
         SwalWithStyle.fire({
@@ -109,9 +168,6 @@ function MyList() {
             }
           })
     }
-
-
-
     return (
         <div className ="grid  grid-cols-1  md:grid-cols-2 ">
             {/** My subject list */}
@@ -140,6 +196,7 @@ function MyList() {
                                         <input
                                             style={{
                                             width: "100%",
+                                            defaultValue:{subjCode},
                                             borderRadius: "0.375rem",
                                             paddingLeft: "0.5rem",
                                             }}
@@ -183,13 +240,25 @@ function MyList() {
                                     <option value="1">D</option>
                                 </select>
                             </div>
-                            <div className="flex flex-col w-full mt-2 pr-2 items-end">    
-                                <button
-                                    className="px-4  bg-white   rounded-xl  shadow-lg focus:shadow-none focus:outline-none"
-                                    onClick={()=> add_Mysubject()}
-                                >
-                                    เพิ่มวิชา
-                                </button>
+                            <div className="flex flex-col w-full mt-2 pr-2 items-end">   
+
+                              <If condition={loading}> 
+                                    <Then>
+                                        <button
+                                         className="px-4 w-20 bg-white   rounded-xl  shadow-lg focus:shadow-none focus:outline-none"
+                                        >       
+                                            <CircularProgress style={{'color': '#30BDFF'}} size={10} />
+                                        </button>
+                                    </Then>
+                                    <Else>
+                                    <button
+                                        className="px-4  bg-white   rounded-xl  shadow-lg focus:shadow-none focus:outline-none"
+                                        onClick={()=> add_Mysubject()}
+                                    >
+                                        เพิ่มวิชา
+                                    </button>
+                                    </Else>
+                              </If> 
                             </div>
                         </div>
                     </div>
@@ -197,11 +266,12 @@ function MyList() {
                 {/** Body */}
                     <div  className="h-full overflow-y-auto ">
 
-                        {!mySubjectList.length > 0 ? (<div className=" Loader mx-auto mt-10"></div>):''}
+                        {!mySubjectList.length > 0 && !loading ? (<div className="w-full mt-10 flex justify-center text-xl text-gray-400">คุณไม่มีรายวิชาสะสม</div>) : ''}
+                        {loading  ? (<div className=" Loader mx-auto mt-10"></div>):""} 
                         {mySubjectList.map((item ,i) => {
                             const subject  = subjectList.filter((subj)=> subj.id === item.subject)
                             const Mygrade  = gradeData.filter((data) => data.id === item.grade)
-
+                            
                             return ( <div
                                     className="m-2 h-8 green-base rounded-md p-1  flex justify-between items-center "
                                     key={i}
@@ -218,29 +288,59 @@ function MyList() {
                                     </div>
                                 </div>) 
                         })}
-
                     </div>
                 {/** footer */}
-                    <div className="w-full h-10 rounded-b-xl bg-blue-300 flex items-center justify-between pl-3  pr-3"> 
-                        <div> หน่วยกิตรวม : </div> 
-                        <div> เกรดเฉลี่ย : </div> 
+                    <div className="w-full h-10 rounded-b-xl bg-blue-300 flex items-center justify-between p-2"> 
+                    <div className="p-1 rounded-md bg-white flex items-center">หน่วยกิตรวม : {` ${totalCredit}`} </div>  
+                    <div className="p-1 rounded-md bg-white flex items-center"> เกรดเฉลี่ย :  {` ${totalGrade}`} </div> 
                     </div>
                 </div>
-                <div className="w-full h-1/3 bg-white rounded-xl float-right shadow-lg text-sm ">
                  {/** Head */}
+               {/*  <div className="w-full h-1/3 bg-white rounded-xl float-right shadow-lg text-sm ">
+                
                     <div className="w-full h-10 rounded-t-xl bg-blue-300 flex items-center pl-3">แผนการเรียนแนะนำ</div>
-                </div>
+                </div> */}
              </div>
             {/** My Plan */}
              <div className="mx-auto w-full  p-5 font-base  "  style={{ height: "90vh" }}>
                 <div className="w-full h-full bg-white rounded-xl float-right shadow-lg text-sm flex flex-col justify-between">
                 {/** Head */}
-                    <div className="w-full h-10 rounded-t-xl bg-blue-300 flex items-center pl-3">แผนการเรียนของฉัน</div>
-                       {/** Body */}
-                    <div ></div>
-                {/** footer */}
+                    <div className="w-full h-10 rounded-t-xl bg-blue-300 flex items-center pl-3 truncate">แผนการเรียนของฉัน  : {myPlan ? myPlan.plan_name : ""}</div>
+                    {/** Body */}
+                    <div className="h-full overflow-y-auto" > 
+                        {loading ? (<div className=" Loader mx-auto mt-10"></div>):""} 
+                        {myPlan.plan_terms.length === 0 && !loading ?(<div className="w-full mt-10 flex justify-center text-xl text-gray-400">คุณยังไม่ได้เลือกแผนการเรียน</div>):''}
+                        
+                       { myPlan.plan_terms.map((term ,i) => (
+
+                        <div  className="bg-white  rounded-lg  border-2 border-blue-100 m-2" key={i} >
+                                {/** term headder */}
+                                <div className="bg-blue-200 h-8 rounded-t-lg pl-2  flex justify-between items-center">
+                                <div>
+                                    <span>ปี {term.term_year}</span> <span>เทอม { term.term_num === '3' ? 'ฤดูร้อน' : term.term_num}</span>
+                                </div>
+                                </div>
+                                {/** Subject list */}
+
+                                {term.subjects.map((item, i) => {
+                                    const filtered = subjectList.filter(subj =>  subj.id === item)
+                                    const subjPass = mySubjectList.filter((subjitem) =>  subjitem.subject  === item)
+
+                                    return (
+                                        <div className={`m-2 h-8   ${subjPass.length > 0 ? "green-base":"bg-gray-100 border border-gray-300"} rounded-md p-1    flex  items-center `} key={i}>
+                                            <div className="w-3/12 mr-1"> {filtered[0].subj_code} </div>
+                                            <div className="w-7/12 mr-1 truncate">{filtered[0].subj_fullname}</div>
+                                            <div className=" w-1/12 mr-1"> {filtered[0].subj_credit} </div>
+                                        </div>
+                                        )
+                                })}
+                            </div>
+                            )
+                       )}
+                    </div>
+                    {/** footer */}
                     <div className="w-full h-10 rounded-b-xl bg-blue-300 flex items-center pl-3"> 
-                        <div> หน่วยกิตรวม : </div> 
+                        <div className="p-1 rounded-md bg-white flex items-center">หน่วยกิตรวม : {` ${totalCredit}/${totalPlanCredit}`} </div>  
                     </div>
                 </div>
              </div>

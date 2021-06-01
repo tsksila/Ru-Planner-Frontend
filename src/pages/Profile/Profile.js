@@ -35,8 +35,8 @@ function Profile() {
 
 
       <Switch>
-          <Route path="/profile/my-list"  component={MyList} />
-          <Route path="/profile/create-plan" component={CreatePlan}/>
+          <Route path="/profile/my-list"  > <MyList/> </Route> 
+          <Route path="/profile/create-plan" > <CreatePlan/></Route>
           <Route path="/profile">
               <Redirect to="/profile/my-list" />
           </Route>

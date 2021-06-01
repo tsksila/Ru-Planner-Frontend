@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect  } from "react"
+import {useHistory} from 'react-router-dom'
 import {If,Else,Then} from 'react-if'
 
 import Autocomplete, {
@@ -22,7 +23,9 @@ const SwalWithStyle = Swal.mixin({
   buttonsStyling: false,
 });
 
+
 function CreatePlan() {
+  const history = useHistory()
   /** ข้อมูลรายวิชา ในเทอม*/
   const [termSubj, setTermSubj] = useState([])
   const [totalCredit, setTotalCredit] = useState(0)
@@ -47,7 +50,7 @@ function CreatePlan() {
 
   const [loading , setLoading] = useState(false)
   const [usePlan , setUsePlan] = useState(false)
-
+  const [newPlan , setnewPlan] = useState()
 
 
   /** get all subject api */
@@ -116,7 +119,10 @@ function CreatePlan() {
                 subj_credit : subjCredit
                 }
 
-              axios.post('https://ruplanner.herokuapp.com/subjects' , body , ).then((res) => {
+              axios.post('https://ruplanner.herokuapp.com/subjects',body, {
+                headers: { Authorization: 'Bearer ' + localStorage.getItem('accessToken') }
+              },)
+              .then((res) => {
                 console.log(res.data)
                 setSubjectList((prev) => [res.data , ...prev])
               }).catch((err) => {
@@ -140,7 +146,7 @@ function CreatePlan() {
           title: 'เพิ่มวิชาสำเร็จ!',
           text : 'ขอบคุณที่ท่านเป็นส่วนหนึ่งในการช่วยพัฒนาชุมชนของเรา!' ,
           showConfirmButton: false,
-          timer: 2000
+          timer: 500
         })
       }
     })
@@ -266,21 +272,34 @@ function CreatePlan() {
                 await axios.post('https://ruplanner.herokuapp.com/plan-terms' , data , {
                   headers: { Authorization: 'Bearer ' + localStorage.getItem('accessToken') }
                 }).then(({data})=> {
-                   console.log(data)
+                   setnewPlan(data)
                 })
               }))
-
-
             setLoading(false)
             setUsePlan(true)
-          })
-
-          
+          })   
       }
-     
-      
-
-
+  }
+  function use_this_plan() {
+      const uid = localStorage.getItem('user_id')
+      setLoading(true)
+      if(newPlan) {
+      const body = {
+        select_plans : [newPlan.plan.id]
+      }
+      axios.put(`https://ruplanner.herokuapp.com/users/${uid}`,body,{
+        headers: { Authorization: 'Bearer ' + localStorage.getItem('accessToken') }
+      }).then((res)=> {
+         setLoading(false)
+         history.push('/profile/my-list')
+      }).catch((err) => {
+         setLoading(false)
+         SwalWithStyle.fire(({
+           icon: "error" ,
+           title : "มีบางอย่างผิดพลาด!"
+         }))
+      })
+     }
   }
 
   return (
@@ -383,7 +402,7 @@ function CreatePlan() {
               <label>หน่วยกิต</label>
               <input
                 type="number"
-                min="0"
+                min={0}
                 className="rounded-md  focus:outline-none w-full pl-2  "
                 defaultValue={subjCredit || ""}
               />
@@ -422,8 +441,8 @@ function CreatePlan() {
 
           {/** Add term */}
 
-          <div className="bg-blue-300 h-10 rounded-b-xl flex justify-between p-2">
-            <div className="p-2 rounded-md bg-white flex items-center">หน่วยกิต : {`${totalCredit}`} </div>
+          <div className="bg-blue-300 h-10 rounded-b-xl flex items-center justify-between p-2">
+            <div className="p-1 rounded-md bg-white flex items-center">หน่วยกิต : {`${totalCredit}`} </div>
             <button
               className=" px-4 bg-white rounded-xl shadow-lg focus:shadow-none focus:outline-none "
               onClick={add_plan_term}
@@ -435,7 +454,7 @@ function CreatePlan() {
       </div>
 
       {/** Add Plan */}
-      <div className="  mx-auto w-full  p-5  " style={{ height: "80vh" }} >
+      <div className="  mx-auto w-full  p-5  " style={{ height: "90vh" }} >
         <div className="w-full bg-white rounded-xl float-right shadow-lg h-full  flex flex-col justify-between ">
           {/** Head */}
           <div className="h-10  bg-blue-300 rounded-t-xl  flex  items-center justify-start  ">
@@ -478,8 +497,11 @@ function CreatePlan() {
             <div className="p-2 rounded-md bg-white flex items-center">หน่วยกิตรวม : {`${planCredit}`}</div>
             <If condition={usePlan} >
               <Then>
-                 <button className=" w-40 px-4 bg-blue-100 rounded-xl shadow-lg text-blue-500 focus:shadow-none focus:outline-none " >
-                    ใช้แผนนี้
+                 <button 
+                  className=" w-40 px-4 bg-green-400 rounded-xl shadow-lg text-white border border-white focus:shadow-none focus:outline-none " 
+                  onClick={()=> use_this_plan()}
+                   >
+                    {loading ? ( <CircularProgress style={{'color': '#ffff'}} size={20} /> ) : "ใช้แผนนี้"} 
                 </button>
               </Then>
               <Else>
