@@ -90,7 +90,7 @@ function Register() {
     axios
       .get("https://ruplanner.herokuapp.com/universities")
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         setUniversity(res.data);
       })
       .catch((error) => {
@@ -102,8 +102,8 @@ function Register() {
     axios
       .get("https://ruplanner.herokuapp.com/faculties")
       .then((res) => {
-        console.log("-------------------------------");
-        console.log(res.data);
+        // console.log("-------------------------------");
+        // console.log(res.data);
         setFaculty(res.data);
       })
       .catch((error) => {
@@ -111,18 +111,7 @@ function Register() {
       });
   }
 
-  function getMajorsAPI() {
-    axios
-      .get("https://ruplanner.herokuapp.com/majors")
-      .then((res) => {
-        console.log("-------------------------------");
-        console.log(res.data);
-        setMajors(res.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
+ 
   function getfacultiesAPI_1(params) {
     axios
       .get("https://ruplanner.herokuapp.com/faculties?university=" + params)
@@ -139,12 +128,12 @@ function Register() {
     axios
       .get("https://ruplanner.herokuapp.com/majors?faculty=" + params)
       .then((res) => {
-        console.log("-------------------------------");
-        console.log(res.data);
+        // console.log("-------------------------------");
+        // console.log(res.data);
         setMajors(res.data);
-        console.log("ลองเข้าสุดท้าย");
-        console.log(university_id);
-        console.log(faculty_id);
+        // console.log("ลองเข้าสุดท้าย");
+        // console.log(university_id);
+        // console.log(faculty_id);
       })
       .catch((error) => {
         console.log(error);
@@ -161,21 +150,23 @@ function Register() {
     alert(JSON.stringify(data));
     console.log("onSubmit");
     if (university_id !== null) {
-      console.log("มีมหาลัยนีเแล้วจ้าาา");
-      console.log("2. university ID = ", university_id);
+      // console.log("มีมหาลัยนีเแล้วจ้าาา");
+      // console.log("2. university ID = ", university_id);
     } else {
-      console.log("ไม่มหาลัยนี้ !!!!!!");
-      try {
+      // console.log("ไม่มหาลัยนี้ !!!!!!");
+      // console.log("2. university ID = ", data.universityData);
+      
         await axios
           .post("https://ruplanner.herokuapp.com/universities", {
-            uni_name: university_id,
+            uni_name: data.universityData,
           })
           .then((res) => {
-            console.log("******  ลงทะเบียนมหาวิทยาลัยสำเร็จ ********");
-            console.log("Data = ", JSON.stringify(res.data));
-            console.log("Data ID = ", JSON.stringify(res.data._id));
-          });
-      } catch (error) {
+            // console.log("******  ลงทะเบียนมหาวิทยาลัยสำเร็จ ********");
+            // console.log("Data = ", JSON.stringify(res.data));
+            // console.log("Data ID = ", JSON.stringify(res.data._id));
+            university_id = res.data._id;
+          })
+      .catch ((error) =>{
         if (error.response) {
           console.log("error.response" + error.response);
         } else if (error.request) {
@@ -183,112 +174,114 @@ function Register() {
         } else if (error.message) {
           console.log("error.message" + error.message);
         }
-      }
+      });
     }
 
     if (faculty_id !== null) {
-      console.log("มีคณะนีเแล้วจ้า");
-      console.log("2. faculty ID = ", faculty_id);
+      // console.log("มีคณะนีเแล้วจ้า");
+      // console.log("2. faculty ID = ", faculty_id);
     } else {
       //ถ้าไม่พบ ID คณะ จะทำการเพิ่ม คณะและ มหาลัยเข้าไป
-      console.log("ไม่มีคณะนี้ !!!!!!");
-      console.log("ชื่อคณะ : ", data.facultyData);
-      console.log("รหัสมหาวิทยาลัย : ", university_id);
-      try {
-        await axios
-          .post("https://ruplanner.herokuapp.com/faculties", {
-            fac_name: faculty_id,
-            university: university_id,
-          })
-          .then((res) => {
-            console.log("******  ลงทะเบียนคณะสำเร็จ ********");
-            //console.log("Data = ", JSON.stringify(res.data));
-            //console.log("Data ID = ", JSON.stringify(res.data._id));
-            console.log("Data = ", res.data);
-            console.log("Data ID = ", res.data._id);
-            faculty_id = res.data._id;
-          });
-      } catch (error) {
-        if (error.response) {
-          console.log("error.response" + error.response);
-        } else if (error.request) {
-          console.log("error.request" + error.request);
-        } else if (error.message) {
-          console.log("error.message" + error.message);
-        }
-      }
+      // console.log("ไม่มีคณะนี้ !!!!!!");
+      // console.log("ชื่อคณะ : ", data.facultyData);
+      // console.log("รหัสมหาวิทยาลัย : ", university_id);
+      
+      await axios
+        .post("https://ruplanner.herokuapp.com/faculties", {
+          fac_name: data.facultyData,
+          university: university_id,
+        })
+        .then((res) => {
+          // console.log("******  ลงทะเบียนคณะสำเร็จ ********");
+          // //console.log("Data = ", JSON.stringify(res.data));
+          // //console.log("Data ID = ", JSON.stringify(res.data._id));
+          // console.log("Data = ", res.data);
+          // console.log("Data ID = ", res.data._id);
+          faculty_id = res.data._id;
+        })
+        .catch((error) => {
+          if (error.response) {
+            console.log("error.response" + error.response);
+          } else if (error.request) {
+            console.log("error.request" + error.request);
+          } else if (error.message) {
+            console.log("error.message" + error.message);
+          }
+        });
     }
 
     console.log("*** major -----------");
     if (major_id !== null) {
       // ถ้าพบ ID  major
-      console.log("มีสาขานี้แล้วจ้าา");
+      // console.log("มีสาขานี้แล้วจ้าา");
     } else {
       //ถ้าไม่พบ ID คณะ จะทำการเพิ่ม คณะและ มหาลัยเข้าไป
-      console.log("ไม่มีคณะนี้นะจ๊ะ !!!!!!");
-      console.log("1.marjor : ", major_id);
-      console.log("2.faculty : ", faculty_id);
-      let pram = {
-        maj_name: major_id,
-        faculty: faculty_id,
-      }
-      try {
-        await axios
-          .post("https://ruplanner.herokuapp.com/majors", pram)
-          .then((res) => {
-            console.log("******  ลงทะเบียนสาขาสำเร็จ  ********");
-            console.log("Data = ", JSON.stringify(res.data));
-            console.log("Data ID = ", JSON.stringify(res.data._id));
-            major_id = res.data._id;
-          });
-      } catch (error) {
+      // console.log("ไม่มีคณะนี้นะจ๊ะ !!!!!!");
+      // console.log("1.marjor : ", data.majorData);
+      // console.log("2.faculty : ", faculty_id);
+
+     
+      await axios
+        .post("https://ruplanner.herokuapp.com/majors", {
+          maj_name: data.majorData,
+          faculty: faculty_id,
+        })
+        .then((res) => {
+          // console.log("******  ลงทะเบียนสาขาสำเร็จ  ********");
+          // console.log("Data = ", res.data);
+          // console.log("Data ID = ", res.data._id);
+          //  console.log("Data = ", JSON.stringify(res.data));
+          //  console.log("Data ID = ", JSON.stringify(res.data._id));
+          major_id = res.data._id;
+        })
+        .catch((error) => {
+          if (error.response) {
+            console.log("error.response" + error.response);
+          } else if (error.request) {
+            console.log("error.request" + error.request);
+          } else if (error.message) {
+            console.log("error.message" + error.message);
+          }
+        });
+    }
+
+    await axios
+      .post("https://ruplanner.herokuapp.com/auth/local/register", {
+        username: data.firstName + " " + data.lastName,
+        email: data.email,
+        password: data.password,
+        major: major_id,
+      })
+      .then((response) => {
+        // console.log("Well done!");
+        // console.log("User profile", response.data.user);
+        // console.log("Token", response.data.jwt);
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "ลงทะเบียนสำเร็จ",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        history.push("/login");
+      })
+      .catch((error) => {
         if (error.response) {
           console.log("error.response" + error.response);
+          let statusErr = error.response.status;
+          if (statusErr === 400) {
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: "อีเมลล์นี้ได้สมัครสมาชิกแล้ว",
+            });
+          }
         } else if (error.request) {
           console.log("error.request" + error.request);
         } else if (error.message) {
           console.log("error.message" + error.message);
         }
-      }
-    }
-
-    // await axios
-    //   .post("https://ruplanner.herokuapp.com/auth/local/register", {
-    //     username: data.firstName + " " + data.lastName,
-    //     email: data.email,
-    //     password: data.password,
-    //     major: major_id,
-    //   })
-    //   .then((response) => {
-    //     console.log("Well done!");
-    //     console.log("User profile", response.data.user);
-    //     console.log("Token", response.data.jwt);
-    //     Swal.fire({
-    //       position: "top-end",
-    //       icon: "success",
-    //       title: "ลงทะเบียนสำเร็จ",
-    //       showConfirmButton: false,
-    //       timer: 1500,
-    //     });
-    //     history.push("/login");
-    //   })
-    //   .catch((error) => {
-    //     if (error.response) {
-    //       console.log("error.response" + error.response);
-    //       let statusErr = error.response.status;
-    //       if (statusErr === 400) {
-    //         Swal.fire({
-    //           icon: "error",
-    //           title: "Oops...",
-    //           text: "อีเมลล์นี้ได้สมัครสมาชิกแล้ว",
-    //         });
-    //       }
-    //     } else if (error.request) {
-    //       console.log("error.request" + error.request);
-    //     } else if (error.message) {
-    //       console.log("error.message" + error.message);
-    //     }
-    //   });
+      });
   };
 
   return (
@@ -461,15 +454,10 @@ function Register() {
               getOptionLabel={(option) => option.uni_name}
               onChange={(event, value) => {
                 university_id = value;
-                console.log("1.onChange : ", value);
-                console.log("1.1 onChange : ", event);
                 if (value !== null) {
                   university_id = value._id;
-                  console.log("2.onChange university_id : ", value._id);
-                  console.log("3.onChange university_id : ", university_id);
                   getfacultiesAPI_1(university_id);
                 }
-                console.log("4. ID มหาลัย : ", university_id);
               }}
               renderInput={(params) => (
                 <TextField
@@ -510,12 +498,8 @@ function Register() {
               getOptionLabel={(option) => option.fac_name}
               onChange={(event, value) => {
                 faculty_id = value;
-                console.log("2. university ID = ", university_id);
-                console.log("onChange faculty value : ", value);
-                console.log("onChange faculty_id : ", faculty_id);
                 if (value !== null) {
                   faculty_id = value._id;
-                  console.log("onChange v : ", faculty_id);
                   getMajorsAPI_1(faculty_id);
                 }
               }}
