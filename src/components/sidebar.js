@@ -51,7 +51,7 @@ function Sidebar({show ,close}) {
      
     return (     
       
-        <div className= {`side-bar  w-64  font-base  justify-center min-h-screen  bg-white   absolute inset-y-0 left-0 transform  ${ show  ? ``:`-translate-x-full`} md:relative md:translate-x-0 transition duration-200 ease-in-out `}>
+        <div className= {`side-bar  w-64  font-base  justify-center h-screen  bg-white z-50   fixed top-0 inset-y-0 left-0 transform  ${ show  ? ``:`-translate-x-full`} md:relative  md:translate-x-0 transition duration-200 ease-in-out `}>
             <button className="text-blue-500 md:hidden float-right  mb-5 focus:outline-none " onClick={close}><CloseIcon/></button>
             {/*  Logo  */}
              <img  alt="Planner" src={process.env.PUBLIC_URL + '/logo512.png'} className="h-44 mt-5 mx-auto"  /> 

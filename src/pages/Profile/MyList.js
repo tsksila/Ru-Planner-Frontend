@@ -1,6 +1,8 @@
 import React , {useState , useEffect} from 'react'
 import {If,Else,Then} from 'react-if'
 
+import {api_url} from '../../configs/api'
+
 import Autocomplete, { createFilterOptions } from "@material-ui/lab/Autocomplete"
 import Cancel from "@material-ui/icons/CancelRounded"
 import {CircularProgress} from '@material-ui/core';
@@ -32,9 +34,9 @@ function MyList() {
 
     /** ข้อมูลวิชา */
     const [subjID ,setSubjID] = useState()
-    const [subjCode, setSubjCode] = useState()
-    const [subjName, setSubjName] = useState()
-    const [subjCredit, setSubjCredit] = useState()
+    const [subjCode, setSubjCode] = useState("")
+    const [subjName, setSubjName] = useState("")
+    const [subjCredit, setSubjCredit] = useState(0)
     const [grade , setGrade] = useState("4")
 
     const [totalPlanCredit , setTotalPlanCredit] = useState()
@@ -46,7 +48,7 @@ function MyList() {
       /** get all subject api */
     useEffect(  () => {
         let mounted = true
-        axios.get("https://ruplanner.herokuapp.com/subjects").then((res) => {
+        axios.get(`${api_url}/subjects`).then((res) => {
         if (mounted) {
            setSubjectList(res.data)
            get_Mysubject()
@@ -97,24 +99,30 @@ function MyList() {
     
     function get_Mysubject (){
         const myid = localStorage.getItem('user_id')
-        axios.get(`https://ruplanner.herokuapp.com/users/${myid}` , {
+        axios.get(`${api_url}/users/${myid}` , {
                 headers: { Authorization: 'Bearer ' + localStorage.getItem('accessToken') }
                 }).then( (res) => {
-                    get_myPlan( res.data.select_plans[0].id ) 
-                    setMySubjectList(res.data.my_subjects)  
-                    setLoading(false)
+                    if(res.data.select_plans.length > 0){
+                        get_myPlan( res.data.select_plans[0].id ) 
+                        setMySubjectList(res.data.my_subjects)  
+                        setLoading(false)
+                    }else{
+                        setLoading(false)
+                    }
                 })
     }
     function get_myPlan(id) {
-            axios.get(`https://ruplanner.herokuapp.com/plans/${id}`).then(({data}) =>{
+            axios.get(`${api_url}/plans/${id}`).then(({data}) =>{
                 setMyPlan(data)
             })
     }
     function set_subject(value) {
+        
+
         setSubjID(value ? value.id :'') 
         setSubjCode(value ? value.subj_code : "")
-        setSubjName(value ? value.subj_fullname : "")
-        setSubjCredit(value ? value.subj_credit : "")
+        setSubjName(value.subj_fullname ? value.subj_fullname : "")
+        setSubjCredit(value.subj_credit ? value.subj_credit : "")
     }
     function add_Mysubject() {
         setLoading(true)
@@ -127,7 +135,7 @@ function MyList() {
                     user : localStorage.getItem('user_id') ,
                     subject : subjID
                 }
-                axios.post('https://ruplanner.herokuapp.com/my-subjects' ,body ,{
+                axios.post(`${api_url}/my-subjects` ,body ,{
                     headers: { Authorization: 'Bearer ' + localStorage.getItem('accessToken') }
                 }).then((res) => {
                     get_Mysubject()
@@ -159,7 +167,7 @@ function MyList() {
 
           }).then((result) => {
             if (result.isConfirmed) {
-                 axios.delete(`https://ruplanner.herokuapp.com/my-subjects/${ms_id}`,{
+                 axios.delete(`${api_url}/my-subjects/${ms_id}`,{
                     headers: { Authorization: 'Bearer ' + localStorage.getItem('accessToken') }
                  }).then((res) => {
                     get_Mysubject()
@@ -212,7 +220,8 @@ function MyList() {
                             <label>ชื่อวิชา</label>
                                 <input
                                     className="rounded-md  focus:outline-none w-full pl-2"
-                                    defaultValue={subjName || ""}
+                                    value={subjName }
+                                    onChange={(e)=> setSubjName(e.target.value)}
                                 />
                             </div>
                             <div className="flex flex-col w-2/12 pr-1">
@@ -221,13 +230,14 @@ function MyList() {
                                     type="number"
                                     min="0"
                                     className="rounded-md  focus:outline-none w-full pl-2  "
-                                    defaultValue={subjCredit || ""}
+                                    value={subjCredit}
+                                    onChange={(e)=> setSubjCredit(e.target.value)}
                                 />
                             </div>
                             <div className="flex flex-col w-1/12">
                                 <label>เกรด</label>
                                 <select
-                                    defaultValue={grade}
+                                    value={grade}
                                     onChange={(e) => setGrade(e.target.value)}
                                     className=" rounded-md h-5 focus:outline-none mr-2"
                                     >
@@ -266,7 +276,7 @@ function MyList() {
                 {/** Body */}
                     <div  className="h-full overflow-y-auto ">
 
-                        {!mySubjectList.length > 0 && !loading ? (<div className="w-full mt-10 flex justify-center text-xl text-gray-400">คุณไม่มีรายวิชาสะสม</div>) : ''}
+                        {mySubjectList.length === 0 && !loading ? (<div className="w-full mt-10 flex justify-center text-xl text-gray-400">คุณไม่มีรายวิชาสะสม</div>) : ''}
                         {loading  ? (<div className=" Loader mx-auto mt-10"></div>):""} 
                         {mySubjectList.map((item ,i) => {
                             const subject  = subjectList.filter((subj)=> subj.id === item.subject)

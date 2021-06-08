@@ -2,6 +2,8 @@ import React, { useState, useEffect  } from "react"
 import {useHistory} from 'react-router-dom'
 import {If,Else,Then} from 'react-if'
 
+import {api_url} from '../../configs/api'
+
 import Autocomplete, {
   createFilterOptions,
 } from "@material-ui/lab/Autocomplete"
@@ -57,7 +59,7 @@ function CreatePlan() {
   useEffect(() => {
      
     let mounted = true
-     axios.get("https://ruplanner.herokuapp.com/subjects").then((res) => {
+     axios.get(`${api_url}/subjects`).then((res) => {
       if (mounted) {
         setSubjectList(res.data);
       }
@@ -119,7 +121,7 @@ function CreatePlan() {
                 subj_credit : subjCredit
                 }
 
-              axios.post('https://ruplanner.herokuapp.com/subjects',body, {
+              axios.post(`${api_url}/subjects`,body, {
                 headers: { Authorization: 'Bearer ' + localStorage.getItem('accessToken') }
               },)
               .then((res) => {
@@ -256,7 +258,7 @@ function CreatePlan() {
           }
 
           /** create plan */
-          axios.post('https://ruplanner.herokuapp.com/plans' , body , {
+          axios.post(`${api_url}/plans` , body , {
             headers: { Authorization: 'Bearer ' + localStorage.getItem('accessToken') }
           }).then( async (res) => {
             plan_id = res.data.id
@@ -269,7 +271,7 @@ function CreatePlan() {
                     plan : plan_id ,
                     subjects : [...term.subject.map(item => item.subjID)]
                 } 
-                await axios.post('https://ruplanner.herokuapp.com/plan-terms' , data , {
+                await axios.post(`${api_url}/plan-terms` , data , {
                   headers: { Authorization: 'Bearer ' + localStorage.getItem('accessToken') }
                 }).then(({data})=> {
                    setnewPlan(data)
@@ -280,6 +282,7 @@ function CreatePlan() {
           })   
       }
   }
+
   function use_this_plan() {
       const uid = localStorage.getItem('user_id')
       setLoading(true)
@@ -287,7 +290,7 @@ function CreatePlan() {
       const body = {
         select_plans : [newPlan.plan.id]
       }
-      axios.put(`https://ruplanner.herokuapp.com/users/${uid}`,body,{
+      axios.put(`${api_url}/users/${uid}`,body,{
         headers: { Authorization: 'Bearer ' + localStorage.getItem('accessToken') }
       }).then((res)=> {
          setLoading(false)

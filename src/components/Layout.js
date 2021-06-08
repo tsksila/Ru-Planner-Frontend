@@ -26,13 +26,13 @@ function Layout({children}) {
 
     return (
 
-        <div className="flex ">
-                <div  className='relative min-h-screen  md:flex '>
+        <div className="flex min-h-screen ">
+                <div  className='relative h-screen  md:flex '>
                     <Sidebar show={show} close={close} />
                 </div>
-                <div className=" flex-1 justify-center ">
+                <div className=" flex-1 h-screen justify-center ">
                   <div className='md:flex'>
-                      <div className="bg-blue-300 text-gray-100 flex justify-between md:hidden">
+                      <div className="bg-blue-300 text-gray-100 flex justify-between  md:relative md:hidden">
                             <button className="mobile-menu-button p-4 focus:outline-none focus:bg-gray-700" onClick={()=> setShow(!show)} >
                                     <MenuIcon />
                             </button>
