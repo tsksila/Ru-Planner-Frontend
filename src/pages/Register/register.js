@@ -143,139 +143,139 @@ function Register() {
     alert(JSON.stringify(data));
     setLoading(true);
     console.log("onSubmit");
-    // if (university_id !== null) {
-    //   // console.log("มีมหาลัยนีเแล้วจ้าาา");
-    //   // console.log("2. university ID = ", university_id);
-    // } else {
-    //   // console.log("ไม่มหาลัยนี้ !!!!!!");
-    //   // console.log("2. university ID = ", data.universityData);
+    if (university_id !== null) {
+      // console.log("มีมหาลัยนีเแล้วจ้าาา");
+      // console.log("2. university ID = ", university_id);
+    } else {
+      // console.log("ไม่มหาลัยนี้ !!!!!!");
+      // console.log("2. university ID = ", data.universityData);
 
-    //   await axios
-    //     .post(api_url +"/universities", {
-    //       uni_name: data.universityData,
-    //     })
-    //     .then((res) => {
-    //       // console.log("******  ลงทะเบียนมหาวิทยาลัยสำเร็จ ********");
-    //       // console.log("Data = ", JSON.stringify(res.data));
-    //       // console.log("Data ID = ", JSON.stringify(res.data._id));
-    //       university_id = res.data._id;
-    //     })
-    //     .catch((error) => {
-    //       if (error.response) {
-    //         console.log("error.response" + error.response);
-    //       } else if (error.request) {
-    //         console.log("error.request" + error.request);
-    //       } else if (error.message) {
-    //         console.log("error.message" + error.message);
-    //       }
-    //     });
-    // }
+      await axios
+        .post(api_url +"/universities", {
+          uni_name: data.universityData,
+        })
+        .then((res) => {
+          // console.log("******  ลงทะเบียนมหาวิทยาลัยสำเร็จ ********");
+          // console.log("Data = ", JSON.stringify(res.data));
+          // console.log("Data ID = ", JSON.stringify(res.data._id));
+          university_id = res.data._id;
+        })
+        .catch((error) => {
+          if (error.response) {
+            console.log("error.response" + error.response);
+          } else if (error.request) {
+            console.log("error.request" + error.request);
+          } else if (error.message) {
+            console.log("error.message" + error.message);
+          }
+        });
+    }
 
-    // if (faculty_id !== null) {
-    //   // console.log("มีคณะนีเแล้วจ้า");
-    //   // console.log("2. faculty ID = ", faculty_id);
-    // } else {
-    //   //ถ้าไม่พบ ID คณะ จะทำการเพิ่ม คณะและ มหาลัยเข้าไป
-    //   // console.log("ไม่มีคณะนี้ !!!!!!");
-    //   // console.log("ชื่อคณะ : ", data.facultyData);
-    //   // console.log("รหัสมหาวิทยาลัย : ", university_id);
+    if (faculty_id !== null) {
+      // console.log("มีคณะนีเแล้วจ้า");
+      // console.log("2. faculty ID = ", faculty_id);
+    } else {
+      //ถ้าไม่พบ ID คณะ จะทำการเพิ่ม คณะและ มหาลัยเข้าไป
+      // console.log("ไม่มีคณะนี้ !!!!!!");
+      // console.log("ชื่อคณะ : ", data.facultyData);
+      // console.log("รหัสมหาวิทยาลัย : ", university_id);
 
-    //   await axios
-    //     .post(api_url +"/faculties", {
-    //       fac_name: data.facultyData,
-    //       university: university_id,
-    //     })
-    //     .then((res) => {
-    //       // console.log("******  ลงทะเบียนคณะสำเร็จ ********");
-    //       // //console.log("Data = ", JSON.stringify(res.data));
-    //       // //console.log("Data ID = ", JSON.stringify(res.data._id));
-    //       // console.log("Data = ", res.data);
-    //       // console.log("Data ID = ", res.data._id);
-    //       faculty_id = res.data._id;
-    //     })
-    //     .catch((error) => {
-    //       if (error.response) {
-    //         console.log("error.response" + error.response);
-    //       } else if (error.request) {
-    //         console.log("error.request" + error.request);
-    //       } else if (error.message) {
-    //         console.log("error.message" + error.message);
-    //       }
-    //     });
-    // }
+      await axios
+        .post(api_url +"/faculties", {
+          fac_name: data.facultyData,
+          university: university_id,
+        })
+        .then((res) => {
+          // console.log("******  ลงทะเบียนคณะสำเร็จ ********");
+          // //console.log("Data = ", JSON.stringify(res.data));
+          // //console.log("Data ID = ", JSON.stringify(res.data._id));
+          // console.log("Data = ", res.data);
+          // console.log("Data ID = ", res.data._id);
+          faculty_id = res.data._id;
+        })
+        .catch((error) => {
+          if (error.response) {
+            console.log("error.response" + error.response);
+          } else if (error.request) {
+            console.log("error.request" + error.request);
+          } else if (error.message) {
+            console.log("error.message" + error.message);
+          }
+        });
+    }
 
-    // console.log("*** major -----------");
-    // if (major_id !== null) {
-    //   // ถ้าพบ ID  major
-    //   // console.log("มีสาขานี้แล้วจ้าา");
-    // } else {
-    //   //ถ้าไม่พบ ID คณะ จะทำการเพิ่ม คณะและ มหาลัยเข้าไป
-    //   // console.log("ไม่มีคณะนี้นะจ๊ะ !!!!!!");
-    //   // console.log("1.marjor : ", data.majorData);
-    //   // console.log("2.faculty : ", faculty_id);
+    console.log("*** major -----------");
+    if (major_id !== null) {
+      // ถ้าพบ ID  major
+      // console.log("มีสาขานี้แล้วจ้าา");
+    } else {
+      //ถ้าไม่พบ ID คณะ จะทำการเพิ่ม คณะและ มหาลัยเข้าไป
+      // console.log("ไม่มีคณะนี้นะจ๊ะ !!!!!!");
+      // console.log("1.marjor : ", data.majorData);
+      // console.log("2.faculty : ", faculty_id);
 
-    //   await axios
-    //     .post(api_url +"/majors", {
-    //       maj_name: data.majorData,
-    //       faculty: faculty_id,
-    //     })
-    //     .then((res) => {
-    //       // console.log("******  ลงทะเบียนสาขาสำเร็จ  ********");
-    //       // console.log("Data = ", res.data);
-    //       // console.log("Data ID = ", res.data._id);
-    //       //  console.log("Data = ", JSON.stringify(res.data));
-    //       //  console.log("Data ID = ", JSON.stringify(res.data._id));
-    //       major_id = res.data._id;
-    //     })
-    //     .catch((error) => {
-    //       if (error.response) {
-    //         console.log("error.response" + error.response);
-    //       } else if (error.request) {
-    //         console.log("error.request" + error.request);
-    //       } else if (error.message) {
-    //         console.log("error.message" + error.message);
-    //       }
-    //     });
-    // }
+      await axios
+        .post(api_url +"/majors", {
+          maj_name: data.majorData,
+          faculty: faculty_id,
+        })
+        .then((res) => {
+          // console.log("******  ลงทะเบียนสาขาสำเร็จ  ********");
+          // console.log("Data = ", res.data);
+          // console.log("Data ID = ", res.data._id);
+          //  console.log("Data = ", JSON.stringify(res.data));
+          //  console.log("Data ID = ", JSON.stringify(res.data._id));
+          major_id = res.data._id;
+        })
+        .catch((error) => {
+          if (error.response) {
+            console.log("error.response" + error.response);
+          } else if (error.request) {
+            console.log("error.request" + error.request);
+          } else if (error.message) {
+            console.log("error.message" + error.message);
+          }
+        });
+    }
 
-    // await axios
-    //   .post(api_url +"/auth/local/register", {
-    //     username: data.firstName + " " + data.lastName,
-    //     email: data.email,
-    //     password: data.password,
-    //     major: major_id,
-    //   })
-    //   .then((response) => {
-    //     setLoading(false);
-    //     // console.log("Well done!");
-    //     // console.log("User profile", response.data.user);
-    //     // console.log("Token", response.data.jwt);
-    //     Swal.fire({
-    //       position: "top-end",
-    //       icon: "success",
-    //       title: "ลงทะเบียนสำเร็จ",
-    //       showConfirmButton: false,
-    //       timer: 1500,
-    //     });
-    //     history.push("/login");
-    //   })
-    //   .catch((error) => {
-    //     if (error.response) {
-    //       console.log("error.response" + error.response);
-    //       let statusErr = error.response.status;
-    //       if (statusErr === 400) {
-    //         Swal.fire({
-    //           icon: "error",
-    //           title: "Oops...",
-    //           text: "อีเมลล์นี้ได้สมัครสมาชิกแล้ว",
-    //         });
-    //       }
-    //     } else if (error.request) {
-    //       console.log("error.request" + error.request);
-    //     } else if (error.message) {
-    //       console.log("error.message" + error.message);
-    //     }
-    //   });
+    await axios
+      .post(api_url +"/auth/local/register", {
+        username: data.firstName + " " + data.lastName,
+        email: data.email,
+        password: data.password,
+        major: major_id,
+      })
+      .then((response) => {
+        setLoading(false);
+        // console.log("Well done!");
+        // console.log("User profile", response.data.user);
+        // console.log("Token", response.data.jwt);
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "ลงทะเบียนสำเร็จ",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        history.push("/login");
+      })
+      .catch((error) => {
+        if (error.response) {
+          console.log("error.response" + error.response);
+          let statusErr = error.response.status;
+          if (statusErr === 400) {
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: "อีเมลล์นี้ได้สมัครสมาชิกแล้ว",
+            });
+          }
+        } else if (error.request) {
+          console.log("error.request" + error.request);
+        } else if (error.message) {
+          console.log("error.message" + error.message);
+        }
+      });
   };
 
   return (
