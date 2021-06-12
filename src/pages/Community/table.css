@@ -1,0 +1,23 @@
+table {
+  border-collapse: separate;
+   border-spacing: 0px 10px;
+   /* margin-bottom: 20px; */
+  }
+
+.star {
+  display: inline-block;  
+  cursor: pointer;
+}
+
+.inactive, .active {
+  background: transparent;
+  user-select: none;
+}
+
+.inactive {
+  color: #f1f1e8;
+}
+
+.active {
+  color: red;
+}
